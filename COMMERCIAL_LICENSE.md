@@ -41,4 +41,4 @@ We respond within 2 business days.
 
 ---
 
-Built by [Citadel Labs](https://citadellabs.ai) — the team behind [Zypher](https://citadellabs.ai/zypher).
+Built by [Citadel Agentic Labs](https://citadellabs.ai) — the team behind [Zypher](https://citadellabs.ai/zypher).

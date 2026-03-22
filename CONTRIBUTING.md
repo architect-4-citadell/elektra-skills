@@ -46,7 +46,7 @@ Every change must:
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under [CC BY-NC-SA 4.0](./LICENSE).
+By contributing, you agree that your contributions will be licensed under [CC BY-NC-SA 4.0](./LICENSE). Citadel Agentic Labs retains copyright.
 
 ## Questions?
 
