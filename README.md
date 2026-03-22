@@ -156,7 +156,7 @@ Elektra Skills stands on the shoulders of these ecosystems and tools. Credit whe
 | **[superpowers](https://skills.sh/obra)** | AI agent composition, planning, and code review skills | [skills.sh](https://skills.sh/obra) |
 | **[document-skills](https://skills.sh)** | Document and code skills (PDF, DOCX, PPTX, XLSX) | [skills.sh](https://skills.sh) |
 | **[ui-ux-pro-max](https://skills.sh)** | 50+ styles, 161 color palettes, 99 UX guidelines | [skills.sh](https://skills.sh) |
-| **[everything-claude-code](https://github.com/xthefull/everything-claude-code)** | Claude Code meta-skills — 100+ skills, agents, and hooks | [GitHub](https://github.com/xthefull/everything-claude-code) |
+| **[everything-claude-code](https://github.com/affaan-m/everything-claude-code)** | Claude Code meta-skills — 100+ skills, agents, and hooks | [GitHub](https://github.com/affaan-m/everything-claude-code) |
 | **[autoresearch (Karpathy)](https://github.com/karpathy/autoresearch)** | Autonomous iteration loop — the original inspiration | [GitHub](https://github.com/karpathy/autoresearch) |
 | **[skills.sh](https://skills.sh)** | Open agent skills ecosystem — discovery + distribution | [Site](https://skills.sh) |
 | **[Agent Skills Specification](https://agentskills.io)** | The format standard these skills follow | [Spec](https://agentskills.io/specification) |
