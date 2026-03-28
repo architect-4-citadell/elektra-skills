@@ -1,0 +1,135 @@
+:root {
+  /* ── Kinetic Silence Core (v1r3 Terminal parity) ── */
+  --ks-deep-space: #0D0F14;
+  --ks-surface: #13151B;
+  --ks-elevated: #1A1D25;
+  --ks-hover: #22252E;
+  --ks-accent: #6C63FF;
+  --ks-accent-hover: #7B73FF;
+  --ks-accent-bg: rgba(108, 99, 255, 0.08);
+  --ks-text-primary: #F0F2F7;
+  --ks-text-secondary: #A8B2D8;
+  --ks-text-muted: #5E6682;
+  --ks-border-subtle: #1E2130;
+  --ks-border-medium: #2A2D3A;
+  --ks-border-focus: #6C63FF;
+
+  /* ── Kinetic Silence Light Mode (warm, brand-aligned — NOT pure white) ── */
+  --ks-light-base: #F4F2EE;
+  --ks-light-surface: #EAE7E1;
+  --ks-light-elevated: #F9F7F4;
+  --ks-light-text-primary: #0D0F14;
+  --ks-light-text-secondary: #3D3F4A;
+  --ks-light-accent: #6C63FF;
+  --ks-light-border: #D8D4CC;
+
+  /* ── Brand (harmonized) ── */
+  --zypher-ink: #0D0F14;
+  --zypher-paper: oklch(0.97 0.005 60);
+  --zypher-accent: #6C63FF;
+  --zypher-accent-light: #7B73FF;
+
+  /* ── CaL Brand (Citadel Agentic Labs — prism green/blue) ── */
+  --cal-green: #4CAF50;
+  --cal-green-light: #7CB342;
+  --cal-green-dark: #2E7D32;
+  --cal-green-hover: #66BB6A;
+  --cal-green-bg: rgba(76, 175, 80, 0.08);
+  --cal-blue: #90CAF9;
+  --cal-blue-bg: rgba(144, 202, 249, 0.08);
+
+  /* ── Story accents ── */
+  --story-alex: oklch(0.75 0.12 65);
+  --story-sam: oklch(0.65 0.14 175);
+  --story-jordan: oklch(0.65 0.14 320);
+
+  /* ── Warm paper scale (hue 60) ── */
+  --paper-50: oklch(0.98 0.005 60);
+  --paper-100: oklch(0.95 0.008 60);
+  --paper-200: oklch(0.90 0.010 60);
+  --paper-300: oklch(0.85 0.012 60);
+
+  /* Indigo brand scale (hue 250) */
+  --indigo-50: oklch(0.97 0.02 250);
+  --indigo-100: oklch(0.93 0.04 250);
+  --indigo-200: oklch(0.85 0.08 250);
+  --indigo-300: oklch(0.75 0.12 250);
+  --indigo-400: oklch(0.65 0.16 250);
+  --indigo-500: oklch(0.55 0.20 250);
+  --indigo-600: oklch(0.45 0.22 250);
+  --indigo-700: oklch(0.35 0.20 250);
+  --indigo-800: oklch(0.25 0.16 250);
+  --indigo-900: oklch(0.17 0.10 250);
+  --indigo-950: oklch(0.13 0.06 250);
+
+  /* Neutral scale */
+  --neutral-0: oklch(1.0 0 0);
+  --neutral-50: oklch(0.98 0.005 250);
+  --neutral-100: oklch(0.95 0.01 250);
+  --neutral-200: oklch(0.90 0.01 250);
+  --neutral-300: oklch(0.82 0.02 250);
+  --neutral-400: oklch(0.65 0.02 250);
+  --neutral-500: oklch(0.50 0.02 250);
+  --neutral-600: oklch(0.40 0.02 250);
+  --neutral-700: oklch(0.32 0.02 250);
+  --neutral-800: oklch(0.24 0.02 250);
+  --neutral-900: oklch(0.17 0.015 250);
+  --neutral-950: oklch(0.13 0.01 250);
+
+  /* Status hues */
+  --green-500: oklch(0.72 0.18 145);
+  --green-600: oklch(0.45 0.20 145);
+  --amber-500: oklch(0.78 0.16 75);
+  --amber-600: oklch(0.55 0.18 75);
+  --red-500: oklch(0.68 0.20 25);
+  --red-600: oklch(0.50 0.22 25);
+  --blue-500: oklch(0.72 0.14 230);
+  --blue-600: oklch(0.50 0.16 230);
+
+  /* Intelligence tier hues */
+  --tier-instant: oklch(0.65 0.10 250);
+  --tier-instant-light: oklch(0.50 0.12 250);
+  --tier-swift: oklch(0.72 0.16 250);
+  --tier-swift-light: oklch(0.48 0.18 250);
+  --tier-deep: oklch(0.78 0.20 270);
+  --tier-deep-light: oklch(0.45 0.22 270);
+  --tier-council: oklch(0.82 0.22 290);
+  --tier-council-light: oklch(0.42 0.24 290);
+
+  /* Typography */
+  --font-display: var(--font-instrument-serif), "Georgia", serif;
+  --font-sans: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Type scale — premium 8-10:1 ratio */
+  --type-hero: clamp(64px, 8vw + 1rem, 120px);
+  --type-display: clamp(48px, 5vw + 1rem, 80px);
+  --type-heading: clamp(36px, 4vw + 0.5rem, 56px);
+  --type-stat: clamp(72px, 7vw + 1rem, 120px);
+
+  /* Teal accent */
+  --teal-400: oklch(0.70 0.14 185);
+  --teal-500: oklch(0.60 0.16 185);
+
+  /* Spacing base */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* ── Brand-contextual accent (via data-brand attribute on <main>) ── */
+  --brand-accent: var(--ks-accent);
+  --brand-accent-hover: var(--ks-accent-hover);
+  --brand-accent-bg: var(--ks-accent-bg);
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+}
