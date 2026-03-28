@@ -16,42 +16,37 @@ INPUT=$(cat)
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty')
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
 
-# Read current state
-PHASE=$(jq -r '.phase // "init"' "$STATE_FILE")
-TOOL_CALLS=$(jq -r '.tool_calls // 0' "$STATE_FILE")
-EDITS=$(jq -r '.edits // 0' "$STATE_FILE")
-TESTS_RUN=$(jq -r '.tests_run // false' "$STATE_FILE")
-REVIEW_DONE=$(jq -r '.review_done // false' "$STATE_FILE")
-PLAN_LOADED=$(jq -r '.plan_loaded // false' "$STATE_FILE")
+# Read current state once
+STATE=$(cat "$STATE_FILE")
+PHASE=$(echo "$STATE" | jq -r '.phase // "init"')
+TOOL_CALLS=$(echo "$STATE" | jq -r '.tool_calls // 0')
+EDITS=$(echo "$STATE" | jq -r '.edits // 0')
+TESTS_RUN=$(echo "$STATE" | jq -r '.tests_run // false')
+REVIEW_DONE=$(echo "$STATE" | jq -r '.review_done // false')
+PLAN_LOADED=$(echo "$STATE" | jq -r '.plan_loaded // false')
 
-# Increment tool calls
+# Build jq update expression
 NEW_COUNT=$((TOOL_CALLS + 1))
-jq --argjson tc "$NEW_COUNT" --arg lt "$TOOL_NAME" \
-  '.tool_calls = $tc | .last_tool = $lt' "$STATE_FILE" > "${STATE_FILE}.tmp" \
-  && mv "${STATE_FILE}.tmp" "$STATE_FILE"
+JQ_UPDATE=".tool_calls = $NEW_COUNT | .last_tool = \"$TOOL_NAME\""
 
 case "$TOOL_NAME" in
   Skill)
     SKILL_NAME=$(echo "$INPUT" | jq -r '.tool_input.skill // empty')
     case "$SKILL_NAME" in
       standard-orders|SO-godspeed|godspeed|godspeed-resume)
-        jq '.phase = "plan" | .plan_loaded = true' "$STATE_FILE" > "${STATE_FILE}.tmp" \
-          && mv "${STATE_FILE}.tmp" "$STATE_FILE"
+        JQ_UPDATE="$JQ_UPDATE | .phase = \"plan\" | .plan_loaded = true"
         ;;
       responsible-ai)
-        jq '.phase = "audit"' "$STATE_FILE" > "${STATE_FILE}.tmp" \
-          && mv "${STATE_FILE}.tmp" "$STATE_FILE"
+        JQ_UPDATE="$JQ_UPDATE | .phase = \"audit\""
         ;;
       SO-pm|project-mgmt)
-        jq '.phase = "review" | .review_done = true' "$STATE_FILE" > "${STATE_FILE}.tmp" \
-          && mv "${STATE_FILE}.tmp" "$STATE_FILE"
+        JQ_UPDATE="$JQ_UPDATE | .phase = \"review\" | .review_done = true"
         ;;
     esac
     ;;
   Edit|Write)
     NEW_EDITS=$((EDITS + 1))
-    jq --argjson e "$NEW_EDITS" '.edits = $e | .phase = "implement"' "$STATE_FILE" > "${STATE_FILE}.tmp" \
-      && mv "${STATE_FILE}.tmp" "$STATE_FILE"
+    JQ_UPDATE="$JQ_UPDATE | .edits = $NEW_EDITS | .phase = \"implement\""
     # Warn if 3+ edits without plan (regardless of current phase)
     if [[ "$PLAN_LOADED" == "false" && "$NEW_EDITS" -ge 3 ]]; then
       echo "[CYCLE GUARD] 3+ edits without loading a plan. Consider /standard-orders or /godspeed first." >&2
@@ -60,8 +55,7 @@ case "$TOOL_NAME" in
   Bash)
     # Generic test runner detection
     if echo "$COMMAND" | grep -qE '(pytest|jest|vitest|mocha|cargo test|go test|npm test|pnpm test|yarn test|ruff check|pyright|tsc --noEmit|mix test|bundle exec rspec)'; then
-      jq '.tests_run = true | .phase = "test"' "$STATE_FILE" > "${STATE_FILE}.tmp" \
-        && mv "${STATE_FILE}.tmp" "$STATE_FILE"
+      JQ_UPDATE="$JQ_UPDATE | .tests_run = true | .phase = \"test\""
     fi
     # Warn before push without review/tests
     if echo "$COMMAND" | grep -qE '^git push'; then
@@ -74,9 +68,11 @@ case "$TOOL_NAME" in
     fi
     ;;
   Agent)
-    jq '.phase = "implement"' "$STATE_FILE" > "${STATE_FILE}.tmp" \
-      && mv "${STATE_FILE}.tmp" "$STATE_FILE"
+    JQ_UPDATE="$JQ_UPDATE | .phase = \"implement\""
     ;;
 esac
+
+# Single write to state file
+echo "$STATE" | jq "$JQ_UPDATE" > "${STATE_FILE}.tmp" && mv "${STATE_FILE}.tmp" "$STATE_FILE"
 
 exit 0

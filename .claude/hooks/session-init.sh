@@ -35,55 +35,41 @@ check_dependency_skills() {
   local MISSING=()
   local INSTALLED=()
 
-  # Required: gstack (governance workflows, QA, browser testing, review)
-  if [[ -d "$SKILLS_DIR/gstack" ]] || ls "$SKILLS_DIR"/*/gstack 2>/dev/null | head -1 >/dev/null 2>&1; then
-    INSTALLED+=("gstack")
-  else
-    MISSING+=("gstack|npx skills add garrytan/gstack -g -y|Governor Stack -- QA, review, browser testing, ship workflows")
-  fi
+  # Dependency table: name|install_cmd|description|search_patterns (colon-separated glob paths)
+  local DEPS=(
+    "gstack|npx skills add garrytan/gstack -g -y|Governor Stack -- QA, review, browser testing, ship workflows|$SKILLS_DIR/gstack:$SKILLS_DIR/*/gstack"
+    "superpowers|npx skills add obra/superpowers -g -y|Planning, code review, parallel agent dispatch|$SKILLS_DIR/superpowers:$PLUGINS_CACHE/superpowers-dev/superpowers"
+    "claude-mem|npx skills add thedotmack/claude-mem -g -y|Persistent memory search across sessions (recommended)|$SKILLS_DIR/claude-mem:$PLUGINS_CACHE/thedotmack/claude-mem"
+    "ui-ux-pro-max|npx skills add ui-ux-pro-max -g -y|50+ styles, 99 UX guidelines, design review for P3.5/P4.5 (recommended)|$SKILLS_DIR/ui-ux-pro-max:$PLUGINS_CACHE/*/ui-ux-pro-max*"
+    "everything-claude-code|npx skills add affaan-m/everything-claude-code -g -y|100+ agent skills -- TDD, code review, build resolution (optional)|$SKILLS_DIR/everything-claude-code:$PLUGINS_CACHE/*/everything-claude-code"
+  )
 
-  # Required: superpowers (planning, code review, multi-agent composition)
-  if ls "$PLUGINS_CACHE"/superpowers-dev/superpowers 2>/dev/null | head -1 >/dev/null 2>&1 || \
-     [[ -d "$SKILLS_DIR/superpowers" ]]; then
-    INSTALLED+=("superpowers")
-  else
-    MISSING+=("superpowers|npx skills add obra/superpowers -g -y|Planning, code review, parallel agent dispatch")
-  fi
-
-  # Recommended: claude-mem (persistent memory across sessions)
-  if ls "$PLUGINS_CACHE"/thedotmack/claude-mem 2>/dev/null | head -1 >/dev/null 2>&1 || \
-     [[ -d "$SKILLS_DIR/claude-mem" ]]; then
-    INSTALLED+=("claude-mem")
-  else
-    MISSING+=("claude-mem|npx skills add thedotmack/claude-mem -g -y|Persistent memory search across sessions (recommended)")
-  fi
-
-  # Recommended: ui-ux-pro-max (design review, 99 UX guidelines)
-  if ls "$PLUGINS_CACHE"/*/ui-ux-pro-max* 2>/dev/null | head -1 >/dev/null 2>&1 || \
-     [[ -d "$SKILLS_DIR/ui-ux-pro-max" ]]; then
-    INSTALLED+=("ui-ux-pro-max")
-  else
-    MISSING+=("ui-ux-pro-max|npx skills add ui-ux-pro-max -g -y|50+ styles, 99 UX guidelines, design review for P3.5/P4.5 (recommended)")
-  fi
-
-  # Optional: everything-claude-code (100+ meta-skills)
-  if ls "$PLUGINS_CACHE"/*/everything-claude-code 2>/dev/null | head -1 >/dev/null 2>&1 || \
-     [[ -d "$SKILLS_DIR/everything-claude-code" ]]; then
-    INSTALLED+=("everything-claude-code")
-  else
-    MISSING+=("everything-claude-code|npx skills add affaan-m/everything-claude-code -g -y|100+ agent skills -- TDD, code review, build resolution (optional)")
-  fi
+  for dep in "${DEPS[@]}"; do
+    IFS='|' read -r name cmd desc paths <<< "$dep"
+    local found=false
+    IFS=':' read -ra SEARCH_PATHS <<< "$paths"
+    for pattern in "${SEARCH_PATHS[@]}"; do
+      # shellcheck disable=SC2086
+      if ls $pattern 2>/dev/null | head -1 >/dev/null 2>&1; then
+        found=true
+        break
+      fi
+    done
+    if [[ "$found" == "true" ]]; then
+      INSTALLED+=("$name")
+    else
+      MISSING+=("$name|$cmd|$desc")
+    fi
+  done
 
   # Report
   if [[ ${#MISSING[@]} -gt 0 ]]; then
     echo ""
     echo "[ELEKTRA] Dependency Check:"
     echo ""
-    if [[ ${#INSTALLED[@]} -gt 0 ]]; then
-      for skill in "${INSTALLED[@]}"; do
-        echo "  [x] $skill"
-      done
-    fi
+    for skill in "${INSTALLED[@]}"; do
+      echo "  [x] $skill"
+    done
     for entry in "${MISSING[@]}"; do
       IFS='|' read -r name cmd desc <<< "$entry"
       echo "  [ ] $name -- $desc"

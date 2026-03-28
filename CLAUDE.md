@@ -37,7 +37,7 @@ Elektra's Standing Orders are self-contained. These companion skills extend capa
 | **[gstack](https://skills.sh/garrytan/gstack)** | Required | `npx skills add garrytan/gstack -g -y` | QA, review, browser testing, ship workflows |
 | **[superpowers](https://skills.sh/obra)** | Required | `npx skills add obra/superpowers -g -y` | Planning, code review, parallel agent dispatch |
 | **[claude-mem](https://skills.sh/thedotmack/claude-mem)** | Recommended | `npx skills add thedotmack/claude-mem -g -y` | Persistent memory search across sessions |
-| **[ui-ux-pro-max](https://skills.sh)** | Recommended | `npx skills add ui-ux-pro-max -g -y` | 50+ styles, 161 color palettes, 99 UX guidelines, design review |
+| **[ui-ux-pro-max](https://uupm.cc)** | Recommended | `npx skills add ui-ux-pro-max -g -y` | 50+ styles, 161 color palettes, 99 UX guidelines, design review |
 | **[everything-claude-code](https://github.com/affaan-m/everything-claude-code)** | Optional | `npx skills add affaan-m/everything-claude-code -g -y` | 100+ meta-skills (TDD, build resolution, code review agents) |
 
 `session-init.sh` checks for these on first session and reports missing dependencies.

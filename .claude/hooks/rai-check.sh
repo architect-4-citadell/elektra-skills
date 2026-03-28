@@ -2,6 +2,8 @@
 # RAI Check -- guardrail on sensitive file edits
 # PreToolUse hook: detects RAI-sensitive file paths and injects governance context
 
+set -euo pipefail
+
 INPUT=$(cat)
 FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
 

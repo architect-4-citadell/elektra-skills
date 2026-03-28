@@ -12,41 +12,37 @@ if [[ -z "$FILE_PATH" || ! -f "$FILE_PATH" ]]; then
   exit 0
 fi
 
-# Python: ruff format check
-if [[ "$FILE_PATH" == *.py ]]; then
-  if command -v ruff &>/dev/null; then
-    if ! ruff format --check "$FILE_PATH" 2>/dev/null; then
-      echo "[QUALITY] $FILE_PATH has formatting issues. Run: ruff format $FILE_PATH" >&2
+# Language-specific checks
+case "$FILE_PATH" in
+  *.py)
+    if command -v ruff &>/dev/null; then
+      if ! ruff format --check "$FILE_PATH" 2>/dev/null; then
+        echo "[QUALITY] $FILE_PATH has formatting issues. Run: ruff format $FILE_PATH" >&2
+      fi
     fi
-  fi
-fi
-
-# TypeScript/JavaScript: console.log in production code
-if [[ "$FILE_PATH" == *.ts || "$FILE_PATH" == *.tsx || "$FILE_PATH" == *.js || "$FILE_PATH" == *.jsx ]]; then
-  if [[ "$FILE_PATH" != *test* && "$FILE_PATH" != *spec* && "$FILE_PATH" != *__tests__* ]]; then
-    if grep -q 'console\.log' "$FILE_PATH" 2>/dev/null; then
-      echo "[QUALITY] $FILE_PATH contains console.log -- remove before shipping." >&2
+    ;;
+  *.ts|*.tsx|*.js|*.jsx)
+    if [[ "$FILE_PATH" != *test* && "$FILE_PATH" != *spec* && "$FILE_PATH" != *__tests__* ]]; then
+      if grep -q 'console\.log' "$FILE_PATH" 2>/dev/null; then
+        echo "[QUALITY] $FILE_PATH contains console.log -- remove before shipping." >&2
+      fi
     fi
-  fi
-fi
-
-# Go: gofmt check
-if [[ "$FILE_PATH" == *.go ]]; then
-  if command -v gofmt &>/dev/null; then
-    if [[ -n "$(gofmt -l "$FILE_PATH" 2>/dev/null)" ]]; then
-      echo "[QUALITY] $FILE_PATH has formatting issues. Run: gofmt -w $FILE_PATH" >&2
+    ;;
+  *.go)
+    if command -v gofmt &>/dev/null; then
+      if [[ -n "$(gofmt -l "$FILE_PATH" 2>/dev/null)" ]]; then
+        echo "[QUALITY] $FILE_PATH has formatting issues. Run: gofmt -w $FILE_PATH" >&2
+      fi
     fi
-  fi
-fi
-
-# Rust: rustfmt check
-if [[ "$FILE_PATH" == *.rs ]]; then
-  if command -v rustfmt &>/dev/null; then
-    if ! rustfmt --check "$FILE_PATH" 2>/dev/null; then
-      echo "[QUALITY] $FILE_PATH has formatting issues. Run: rustfmt $FILE_PATH" >&2
+    ;;
+  *.rs)
+    if command -v rustfmt &>/dev/null; then
+      if ! rustfmt --check "$FILE_PATH" 2>/dev/null; then
+        echo "[QUALITY] $FILE_PATH has formatting issues. Run: rustfmt $FILE_PATH" >&2
+      fi
     fi
-  fi
-fi
+    ;;
+esac
 
 # TODO/FIXME detection (all file types)
 if [[ "$TOOL_NAME" == "Edit" || "$TOOL_NAME" == "Write" ]]; then

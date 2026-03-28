@@ -78,7 +78,7 @@ npx skills add garrytan/gstack obra/superpowers thedotmack/claude-mem ui-ux-pro-
 | **[gstack](https://skills.sh/garrytan/gstack)** | Required | QA, plan review, code review, browser testing, ship workflows |
 | **[superpowers](https://skills.sh/obra)** | Required | Planning, code review, parallel agent dispatch |
 | **[claude-mem](https://skills.sh/thedotmack/claude-mem)** | Recommended | Persistent memory search across sessions |
-| **[ui-ux-pro-max](https://skills.sh)** | Recommended | 50+ styles, 161 palettes, 99 UX guidelines, design review |
+| **[ui-ux-pro-max](https://uupm.cc)** | Recommended | 50+ styles, 161 palettes, 99 UX guidelines, design review |
 | **[everything-claude-code](https://github.com/affaan-m/everything-claude-code)** | Optional | 100+ meta-skills (TDD, build resolution, code review agents) |
 
 ### 3. Start a session
@@ -271,7 +271,7 @@ Pair with **[claude-mem](https://skills.sh/thedotmack/claude-mem)** for search a
 | **[gstack](https://skills.sh/garrytan/gstack)** | Governor Stack -- structured AI agent workflow governance |
 | **[superpowers](https://skills.sh/obra)** | AI agent composition, planning, and code review |
 | **[claude-mem](https://skills.sh/thedotmack/claude-mem)** | Persistent memory search across sessions |
-| **[ui-ux-pro-max](https://skills.sh)** | 50+ styles, 161 color palettes, 99 UX guidelines, design review |
+| **[ui-ux-pro-max](https://uupm.cc)** | 50+ styles, 161 color palettes, 99 UX guidelines, design review |
 | **[everything-claude-code](https://github.com/affaan-m/everything-claude-code)** | 100+ Claude Code meta-skills, agents, and hooks |
 | **[autoresearch (Karpathy)](https://github.com/karpathy/autoresearch)** | Autonomous iteration loop -- the original inspiration |
 | **[skills.sh](https://skills.sh)** | Open agent skills ecosystem -- discovery + distribution |
