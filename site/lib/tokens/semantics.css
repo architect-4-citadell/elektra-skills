@@ -1,0 +1,56 @@
+[data-theme="dark"] {
+  --bg-base: var(--ks-deep-space);
+  --bg-surface: var(--ks-surface);
+  --bg-elevated: var(--ks-elevated);
+  --bg-hover: var(--ks-hover);
+  --border-subtle: var(--ks-border-subtle);
+  --border-default: var(--ks-border-medium);
+  --text-primary: var(--ks-text-primary);
+  --text-secondary: var(--ks-text-secondary);
+  --text-muted: var(--ks-text-muted);
+  --accent: var(--ks-accent);
+  --accent-hover: var(--ks-accent-hover);
+  --accent-bg: var(--ks-accent-bg);
+
+  --color-success: var(--green-500);
+  --color-warning: var(--amber-500);
+  --color-error: var(--red-500);
+  --color-info: var(--blue-500);
+
+  --color-tier-instant: var(--tier-instant);
+  --color-tier-swift: var(--tier-swift);
+  --color-tier-deep: var(--tier-deep);
+  --color-tier-council: var(--tier-council);
+}
+
+[data-theme="light"] {
+  --bg-base: var(--neutral-50);
+  --bg-surface: var(--neutral-0);
+  --bg-elevated: var(--neutral-0);
+  --bg-hover: var(--neutral-100);
+  --border-subtle: var(--neutral-200);
+  --border-default: var(--neutral-300);
+  --text-primary: var(--neutral-950);
+  --text-secondary: var(--neutral-500);
+  --text-muted: var(--neutral-400);
+  --accent: var(--indigo-500);
+  --accent-hover: var(--indigo-600);
+  --accent-bg: var(--indigo-50);
+
+  --color-success: var(--green-600);
+  --color-warning: var(--amber-600);
+  --color-error: var(--red-600);
+  --color-info: var(--blue-600);
+
+  --color-tier-instant: var(--tier-instant-light);
+  --color-tier-swift: var(--tier-swift-light);
+  --color-tier-deep: var(--tier-deep-light);
+  --color-tier-council: var(--tier-council-light);
+}
+
+/* ── Brand-contextual accent overrides ── */
+[data-brand="elektra"] {
+  --brand-accent: var(--cal-green);
+  --brand-accent-hover: var(--cal-green-hover);
+  --brand-accent-bg: var(--cal-green-bg);
+}
