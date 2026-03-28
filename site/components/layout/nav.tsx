@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/cn";
+import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { CaLPrism } from "@/components/logo/cal-prism";
 import { GITHUB_REPO, INSTALL_CMD } from "@/lib/constants";
 
@@ -11,7 +12,7 @@ import { GITHUB_REPO, INSTALL_CMD } from "@/lib/constants";
  */
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useCopyToClipboard();
 
   useEffect(() => {
     const onScroll = () => setScrolled(globalThis.scrollY > 32);
@@ -19,16 +20,6 @@ export function Nav() {
     globalThis.addEventListener("scroll", onScroll, { passive: true });
     return () => globalThis.removeEventListener("scroll", onScroll);
   }, []);
-
-  const handleCopyInstall = async () => {
-    try {
-      await navigator.clipboard.writeText(INSTALL_CMD);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Fallback: silent fail
-    }
-  };
 
   return (
     <nav
@@ -65,7 +56,7 @@ export function Nav() {
           </a>
           <button
             type="button"
-            onClick={handleCopyInstall}
+            onClick={() => copy(INSTALL_CMD)}
             className={cn(
               "px-4 py-1.5 rounded-full text-[13px] font-medium transition-colors",
               "bg-[var(--cal-green)] text-white hover:bg-[var(--cal-green-hover)]"

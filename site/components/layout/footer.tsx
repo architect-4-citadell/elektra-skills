@@ -95,7 +95,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-16 pt-8 border-t border-[var(--ks-border-subtle)]">
           <p className="text-xs text-[var(--ks-text-muted)] text-center">
-            &copy; 2026 Citadel Agentic Labs &middot; CC BY-NC-SA 4.0
+            &copy; {new Date().getFullYear()} Citadel Agentic Labs &middot; CC BY-NC-SA 4.0
           </p>
         </div>
       </div>

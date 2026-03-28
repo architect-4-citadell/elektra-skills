@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { GITHUB_REPO, INSTALL_CMD } from "@/lib/constants";
+import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 
 const AGENTS = [
   { name: "Claude Code", icon: "CC", color: "#D4A574" },
@@ -17,7 +18,7 @@ const AGENTS = [
 export function SceneHeroSkills() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useCopyToClipboard();
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -28,14 +29,6 @@ export function SceneHeroSkills() {
     observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(INSTALL_CMD);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch { /* clipboard unavailable */ }
-  };
 
   return (
     <section
@@ -143,7 +136,7 @@ export function SceneHeroSkills() {
           }}
         >
           <button
-            onClick={handleCopy}
+            onClick={() => copy(INSTALL_CMD)}
             className="group flex w-full items-center gap-3 rounded-xl border border-[var(--cal-green)]/20 bg-[var(--ks-surface)] px-5 py-4 text-left transition-all hover:border-[var(--cal-green)]/50 hover:shadow-[0_0_30px_rgba(76,175,80,0.08)] cursor-pointer"
             aria-label="Copy install command"
           >

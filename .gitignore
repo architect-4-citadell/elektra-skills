@@ -7,11 +7,4 @@
 .context/todos.md
 .context/plans/
 
-# Site build artifacts
-site/node_modules/
-site/.next/
-site/.env.local
-site/.env*.local
-site/.vercel
-site/next-env.d.ts
 .gstack/
