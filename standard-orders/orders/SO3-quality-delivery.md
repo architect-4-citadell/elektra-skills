@@ -6,7 +6,8 @@ Ensures every deliverable (code, UI, document output) meets your project's quali
 
 ## When This Runs
 
-- **P4.5 (UAT/QA):** Automatically for any work touching frontend or document output
+- **P3.5 (Plan Review):** `/plan-design-review` (gstack) finds UI/UX gaps, `/ui-ux-pro-max` locks design decisions, SO3 validates brand tokens
+- **P4.5 (UAT/QA):** `/design-review` (gstack) visual QA + `/ui-ux-pro-max` 10-priority audit + QA for any work touching frontend or document output
 - **P5 (Review):** Quality checklist verification on all UI changes
 - **On demand:** `/SO-quality` for standalone design reviews
 
@@ -72,18 +73,44 @@ Before any frontend or document output work passes P4.5/P5:
 - [ ] Currency formatting applied (symbol placement, spacing)
 - [ ] Em dash style consistent (with or without surrounding spaces)
 
+## Design Review Integration (gstack + ui-ux-pro-max)
+
+When SO3 runs for frontend work, use the **two-layer design review**:
+
+**Layer 1: `/plan-design-review` (gstack)** -- Run at P3.5 to catch UI/UX gaps before code is written. Identifies missing interaction patterns, incomplete user flows, responsive strategy gaps, and design system violations.
+
+**Layer 2: `/ui-ux-pro-max`** -- Run at both P3.5 (lock decisions) and P4.5 (verify implementation). Systematic audit across 10 priority categories:
+
+| Priority | Category | Trigger |
+|----------|----------|---------|
+| 1 (Critical) | Accessibility | All UI changes |
+| 2 (Critical) | Touch & Interaction | Mobile/responsive work |
+| 3 (High) | Performance | Image/asset/layout changes |
+| 4 (High) | Style Selection | New pages/components |
+| 5 (High) | Layout & Responsive | All UI changes |
+| 6 (Medium) | Typography & Color | Theming/branding work |
+| 7 (Medium) | Animation | Motion/transition work |
+| 8 (Medium) | Forms & Feedback | Form/input/error state work |
+| 9 (High) | Navigation | Nav/routing changes |
+| 10 (Low) | Charts & Data | Data visualization work |
+
+**Run at P3.5** (plan-level) to lock design decisions before code. **Run at P4.5** (post-execution) to verify implementation matches design intent.
+
 ## Front-to-Back Validation
 
 SO3 ensures features work end-to-end, not just in isolation. The validation chain:
 
 ```
-Unit Tests (P4)
-    -> Integration Test (P4)
-        -> UAT Bug Hunting (P4.5)
-            -> QA Systematic Testing (P4.5)
-                -> Quality + Design Review SO3 (P4.5)
-                    -> Code Review (P5)
-                        -> Ship Readiness (P7)
+/plan-design-review -- UI/UX gaps (P3.5)
+    -> /ui-ux-pro-max -- lock design decisions (P3.5)
+        -> Unit Tests (P4)
+            -> Integration Test (P4)
+                -> UAT Bug Hunting (P4.5)
+                    -> QA Systematic Testing /qa (P4.5)
+                        -> Design Audit /ui-ux-pro-max (P4.5)
+                            -> Quality + Brand Gate SO3 (P4.5)
+                                -> Code Review /review (P5)
+                                    -> Ship Readiness (P7)
 ```
 
 **The lesson learned:** "Every session passed unit tests, but the feature was dead in production." This validation chain prevents that.

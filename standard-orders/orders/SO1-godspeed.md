@@ -26,6 +26,10 @@ Full-cycle orchestrator: analysis to merged PR in structured phases with RAI gat
    +----------+----------+
               |
    +----------v----------+
+   |  P3.5: PLAN REVIEW  |  /plan-ceo-review OR /plan-eng-review + /plan-design-review + /ui-ux-pro-max
+   +----------+----------+
+              |
+   +----------v----------+
    |  P4: EXECUTE LOOP   |  TDD per chunk, parallel dispatch for independent chunks
    |  +----------------+ |
    |  | Chunk N         | |  1. Write failing test
@@ -36,7 +40,7 @@ Full-cycle orchestrator: analysis to merged PR in structured phases with RAI gat
    +----------+----------+
               |
    +----------v----------+
-   |  P4.5: UAT + QA     |  Front-to-back validation
+   |  P4.5: UAT + QA     |  Front-to-back validation + design review
    +----------+----------+
               |
    +----------v----------+
@@ -143,6 +147,62 @@ Create a chunked implementation plan.
 
 ---
 
+## P3.5: Plan Review Gate
+
+**Pre-execution review.** The plan must survive scrutiny before code is written.
+
+Three review dimensions, invoked based on scope:
+
+### 1. Architecture review (gstack)
+
+| Scope | Review Skill | What It Checks |
+|-------|-------------|----------------|
+| Large feature / new system | `/plan-ceo-review` | Architecture, security, data flow, error rescue, observability, deployment, long-term trajectory. 10 sections. |
+| Standard feature / bug batch | `/plan-eng-review` | Scope challenge, architecture, code quality, test coverage, performance. 4 sections. |
+| Small fix / single-file change | Skip P3.5 | Plan is the change description itself. |
+
+**Review modes** (gstack `/plan-ceo-review`):
+- **SCOPE EXPANSION** (default) -- dream big, find the 10-star product
+- **HOLD SCOPE** -- maximum rigor, bulletproof plan
+- **SCOPE REDUCTION** -- strip to essentials
+
+**Architecture review produces:**
+1. Data flow shadow paths, state machines, failure scenarios
+2. Error & rescue map -- exception classes, rescued vs unrescued, user impact
+3. Security & threat model -- attack surface, input validation, authorization
+4. Test matrix -- new UX/data/code paths that need coverage
+5. Performance review -- N+1 queries, memory, indexes, caching
+6. NOT in scope -- explicit exclusion list
+7. Diagrams -- system architecture, data flow, state machines (mandatory for large features)
+
+### 2. Design review (gstack + ui-ux-pro-max)
+
+When the plan includes UI/frontend work, run the **two-layer design review**:
+
+**Layer 1: `/plan-design-review` (gstack)** -- Identifies UI/UX gaps in the plan:
+- Missing interaction patterns, incomplete user flows
+- Accessibility requirements not addressed in plan
+- Responsive strategy gaps
+- Component reuse opportunities missed
+- Design system violations in proposed approach
+
+**Layer 2: `/ui-ux-pro-max`** -- Locks design decisions before code:
+- **Accessibility** -- 4.5:1 contrast, keyboard nav, screen reader, focus management
+- **Layout & responsive** -- mobile-first, systematic breakpoints, spacing scale
+- **Typography & color** -- font pairing, semantic tokens, dark mode
+- **Navigation patterns** -- bottom nav limits, predictable back, deep linking
+- **Animation** -- 150-300ms, transform/opacity only, reduced-motion support
+
+`/plan-design-review` finds the gaps. `/ui-ux-pro-max` fills them with concrete design decisions.
+
+### 3. Approval
+
+**Output:** Reviewed plan with architecture validation, security model, test matrix, and design decisions locked. Plan doc updated in place.
+
+**Gate:** Plan approved -> P4. Plan needs rework -> update plan, re-review.
+
+---
+
 ## P4: Execute Loop
 
 **Two execution modes** based on chunk dependency analysis from P3:
@@ -187,17 +247,18 @@ Token cap warns at progressive thresholds:
 
 ---
 
-## P4.5: UAT + QA
+## P4.5: UAT + QA + Design Review
 
-**After code is written, before code review.** Validates front-to-back that the feature works -- not just unit tests.
+**After code is written, before code review.** Validates front-to-back that the feature works, looks right, and meets design standards.
+
+### Functional validation
 
 1. **Autonomous UAT** -- Test actual user flows, not mocked paths.
-2. **Systematic QA** -- Mode depends on scope:
-   - `full` -- For new features (systematic exploration)
-   - `quick` -- For bug fixes (30-second smoke test)
-   - `regression` -- For refactors (compare against baseline)
-3. **SO3 Quality Gate** -- If work touches frontend or document output, run SO3 quality checklist (see SO3-quality-delivery.md).
-4. **E2E Integration Smoke Test** -- At least one integration test proving the feature works through the API endpoint.
+2. **Systematic QA** -- Mode depends on scope (invoke `/qa` from gstack):
+   - `full` -- For new features (systematic exploration, 5-15 min, health score)
+   - `quick` -- For bug fixes (30-second smoke test, homepage + top 5 nav targets)
+   - `regression` -- For refactors (compare against baseline, show delta)
+3. **E2E Integration Smoke Test** -- At least one integration test proving the feature works through the API endpoint.
 
 ```bash
 # Backend smoke test pattern
@@ -207,7 +268,36 @@ Token cap warns at progressive thresholds:
 cd <your-frontend-app> && <your-build-command>
 ```
 
-**If bugs found:** Fix them before proceeding to P5. Loop back into P4 for targeted fixes.
+### Design review (if frontend/UI work)
+
+When execution touched frontend code, run the design review pipeline:
+
+1. **Browser dogfooding** -- Use `/qa` (gstack) to visually inspect the UI, capture screenshots with before → action → after evidence.
+2. **Visual QA** -- Invoke `/design-review` (gstack) to find spacing issues, hierarchy problems, AI slop patterns, and fix iteratively with before/after evidence.
+3. **Design system audit** -- Invoke `/ui-ux-pro-max` to review against the 10-priority design checklist:
+
+| Priority | Category | Key Checks |
+|----------|----------|------------|
+| 1 | Accessibility | 4.5:1 contrast, alt text, keyboard nav, aria-labels, focus rings, screen reader |
+| 2 | Touch & Interaction | 44x44pt targets, 8px+ spacing, loading feedback, press states |
+| 3 | Performance | WebP/AVIF images, lazy loading, CLS <0.1, font loading, code splitting |
+| 4 | Style Selection | Match product type, consistent palette, SVG icons, platform-adaptive |
+| 5 | Layout & Responsive | Mobile-first, systematic breakpoints, 16px+ mobile font, 4pt/8dp spacing |
+| 6 | Typography & Color | Line-height 1.5+, 65-75 char width, semantic color tokens, dark mode |
+| 7 | Animation | 150-300ms, transform/opacity only, reduced-motion, meaningful motion |
+| 8 | Forms & Feedback | Visible labels, error near field, empty states, progressive disclosure |
+| 9 | Navigation | Bottom nav ≤5 items, predictable back, deep linking, nav state highlight |
+| 10 | Charts & Data | Correct chart type, accessible colors, legend visible, empty data state |
+
+4. **SO3 Quality Gate** -- If work touches branded content or documents, run SO3 quality checklist (see SO3-quality-delivery.md).
+
+### Design review output
+
+- List of design issues found (categorized by priority 1-10)
+- Evidence: screenshots or browser output
+- Fix recommendations with specific CSS/component changes
+
+**If bugs or design issues found:** Fix before proceeding to P5. Loop back into P4 for targeted fixes.
 
 ---
 

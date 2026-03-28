@@ -1,4 +1,4 @@
-# Godspeed Phase Checklists (12 Phases)
+# Godspeed Phase Checklists (14 Phases)
 
 ## P0: Context Load Checklist
 
@@ -65,6 +65,47 @@
 
 ---
 
+## P3.5: Plan Review Gate Checklist
+
+### Scope assessment
+- [ ] Classify scope: Large feature / Standard feature / Small fix
+- [ ] Large: invoke `/plan-ceo-review` (gstack). Standard: invoke `/plan-eng-review` (gstack). Small: skip P3.5.
+
+### Architecture review (large/standard)
+- [ ] Data flow validated with shadow paths (nil, empty, error, concurrent)
+- [ ] State machines identified with transition rules
+- [ ] Security & threat model: attack surface, input validation, authorization
+- [ ] Error & rescue map: exception classes, user impact
+- [ ] NOT in scope list explicit
+
+### Design review (if frontend in plan)
+- [ ] Invoke `/plan-design-review` (gstack) for UI/UX gap analysis
+  - [ ] Missing interaction patterns identified
+  - [ ] Incomplete user flows flagged
+  - [ ] Responsive strategy gaps caught
+  - [ ] Component reuse opportunities surfaced
+  - [ ] Design system violations in approach flagged
+- [ ] Invoke `/ui-ux-pro-max` to lock design decisions
+  - [ ] Accessibility approach locked (contrast, keyboard nav, screen reader)
+  - [ ] Layout & responsive strategy confirmed (breakpoints, mobile-first)
+  - [ ] Typography & color tokens selected
+  - [ ] Navigation patterns decided
+  - [ ] Animation approach agreed (durations, easing, reduced-motion)
+
+### Test matrix
+- [ ] New UX/data/code paths identified for coverage
+- [ ] Integration test scope defined
+- [ ] Performance benchmarks identified (if applicable)
+
+### Approval
+- [ ] Plan review findings addressed or deferred with rationale
+- [ ] Plan doc updated in place with review notes
+- [ ] User approves plan -> P4
+
+**Gate:** Plan approved -> P4. Plan needs rework -> update, re-review.
+
+---
+
 ## P4: Execute Loop Checklist
 
 Per chunk, in a single session:
@@ -103,19 +144,38 @@ Per chunk, in a single session:
 
 ---
 
-## P4.5: UAT + QA Checklist
+## P4.5: UAT + QA + Design Review Checklist
 
+### Functional validation
 - [ ] Autonomous UAT -- bug hunting against the feature
-- [ ] Systematic QA (full/quick/regression based on scope)
-- [ ] SO3 quality gate (if frontend/document work):
-  - [ ] Color tokens match your design system
-  - [ ] No banned terms or sycophantic patterns
-  - [ ] Typography uses your designated fonts
-  - [ ] Content formatting rules followed
+- [ ] Systematic QA via `/qa` (gstack): full/quick/regression based on scope
 - [ ] E2E Integration Smoke Test:
   - Backend: `<your-test-command> -m "integration" <your-test-directory> -v`
   - Frontend: `cd <your-frontend-app> && <your-build-command>`
-- [ ] If bugs found: loop back to P4 for targeted fixes
+
+### Design review (if frontend/UI work)
+- [ ] Browser dogfooding via `/qa` (gstack) -- screenshots with evidence
+- [ ] Visual QA via `/design-review` (gstack) -- spacing, hierarchy, AI slop, iterative fixes
+- [ ] Design audit via `/ui-ux-pro-max` -- 10-priority checklist:
+  - [ ] P1: Accessibility (contrast, keyboard, aria, focus)
+  - [ ] P2: Touch & Interaction (target size, spacing, feedback)
+  - [ ] P3: Performance (images, CLS, lazy loading)
+  - [ ] P4: Style (palette consistency, SVG icons, platform-adaptive)
+  - [ ] P5: Layout & Responsive (mobile-first, breakpoints, spacing)
+  - [ ] P6: Typography & Color (semantic tokens, dark mode)
+  - [ ] P7: Animation (duration, transform-only, reduced-motion)
+  - [ ] P8: Forms & Feedback (labels, errors, empty states)
+  - [ ] P9: Navigation (bottom nav, back behavior, deep links)
+  - [ ] P10: Charts & Data (chart type, accessible colors, empty state)
+
+### Brand & content quality
+- [ ] SO3 quality gate (if branded/document work):
+  - [ ] Color tokens match design system
+  - [ ] No banned terms or sycophantic patterns
+  - [ ] Typography uses designated fonts
+  - [ ] Content formatting rules followed
+
+- [ ] If bugs or design issues found: loop back to P4 for targeted fixes
 
 ---
 
