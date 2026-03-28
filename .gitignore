@@ -1,0 +1,8 @@
+# Elektra session state (ephemeral, per-session)
+.context/.session-state.json
+.context/rai-log.json
+
+# Conductor workspace context
+.context/notes.md
+.context/todos.md
+.context/plans/
