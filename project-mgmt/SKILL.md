@@ -3,6 +3,7 @@ name: project-mgmt
 version: 1.0.0
 description: "SO2 Project Management -- GitHub PM routine. Check issues, PR status, plan progress, triage, backlog grooming. Runs at P0/P8 of Godspeed, or standalone."
 license: CC BY-NC-SA 4.0
+compatibility: "Claude Code, Cursor, Gemini CLI, Codex, Windsurf, GitHub Copilot, and 30+ compatible agents"
 metadata:
   author: citadel-labs
 ---

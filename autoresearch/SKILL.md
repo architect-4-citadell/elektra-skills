@@ -3,6 +3,7 @@ name: autoresearch
 description: Autonomous Goal-directed Iteration. Apply Karpathy's autoresearch principles to ANY task. Loops autonomously -- modify, verify, keep/discard, repeat. Supports bounded iteration via Iterations: N inline config.
 version: 1.4.0
 license: CC BY-NC-SA 4.0
+compatibility: "Claude Code, Cursor, Gemini CLI, Codex, Windsurf, GitHub Copilot, and 30+ compatible agents"
 metadata:
   author: citadel-labs
 ---

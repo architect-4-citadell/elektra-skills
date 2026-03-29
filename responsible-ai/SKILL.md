@@ -12,6 +12,7 @@ description: >-
   "RAI", "citation", "hallucination", "bias", "PII", "confidence score",
   "content provenance", "disclaimer", "trust page".
 license: CC BY-NC-SA 4.0
+compatibility: "Claude Code, Cursor, Gemini CLI, Codex, Windsurf, GitHub Copilot, and 30+ compatible agents"
 metadata:
   author: citadel-labs
 ---
