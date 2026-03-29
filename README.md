@@ -308,6 +308,8 @@ These skills follow the [Agent Skills specification](https://agentskills.io/spec
 
 Best experience with [Conductor](https://docs.conductor.build/) for multi-agent orchestration.
 
+For a full list of registries where these skills are listed or pending, see the [Registry Distribution Guide](./docs/REGISTRY-DISTRIBUTION.md).
+
 ---
 
 ## License
@@ -328,6 +330,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md). Every contribution must solve a real p
 
 - [Citadel Agentic Labs](https://citadellabs.ai) -- The team behind Elektra
 - [Experiment 002: Agent Skills](https://citadellabs.ai/experiments/agent-skills) -- Full showcase
+- [Registry Distribution Guide](./docs/REGISTRY-DISTRIBUTION.md) -- 14 registries across 3 tiers
 - [Conductor](https://docs.conductor.build/) -- Multi-agent orchestration
 - [skills.sh](https://skills.sh) -- Open agent skills ecosystem
 - [Agent Skills Specification](https://agentskills.io/specification) -- The format standard

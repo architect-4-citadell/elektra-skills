@@ -5,9 +5,9 @@ All notable changes to Elektra Skills will be documented in this file.
 ## [0.5.1] - 2026-03-28
 
 ### Added
-- Registry distribution guide (`docs/REGISTRY-DISTRIBUTION.md`) covering 14 registries across 3 tiers
-- `compatibility` field added to all 6 SKILL.md frontmatter for agentskills.io spec compliance
-- GitHub topics: agent-skills, claude-code, cursor, gemini-cli, codex, ai-governance, ai-agent, skills-sh, responsible-ai, windsurf
+- You can now find every registry where Elektra Skills is listed or pending in the [Registry Distribution Guide](docs/REGISTRY-DISTRIBUTION.md) -- 14 registries across 3 tiers
+- All 6 skills now declare agent compatibility via the `compatibility` frontmatter field, per the [agentskills.io spec](https://agentskills.io/specification)
+- GitHub topics set for discoverability: agent-skills, claude-code, cursor, gemini-cli, codex, ai-governance, ai-agent, skills-sh, responsible-ai, windsurf
 
 ## [0.5.0] - 2026-03-28
 
