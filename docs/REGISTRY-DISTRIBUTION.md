@@ -98,7 +98,6 @@ How to get Elektra Skills listed, discoverable, and installable across every maj
 **Required file:**
 
 ```json
-// .cursor-plugin/plugin.json
 {
   "name": "elektra-skills",
   "displayName": "Elektra Skills — AI Governance & Execution",
@@ -106,7 +105,7 @@ How to get Elektra Skills listed, discoverable, and installable across every maj
   "description": "Solutions Architect AI for your codebase. 6 governance skills for structured execution, RAI compliance, and self-healing workflows.",
   "keywords": ["governance", "execution", "rai", "tdd", "security", "project-management"],
   "license": "CC BY-NC-SA 4.0",
-  "version": "0.5.0"
+  "version": "0.5.1"
 }
 ```
 
@@ -210,6 +209,7 @@ How to get Elektra Skills listed, discoverable, and installable across every maj
 | **URL** | https://agent-skills.md |
 | **How listing works** | Browsable directory. Check for submission process. |
 | **Status** | **NOT YET SUBMITTED** |
+| **Action needed** | Check submission process. |
 
 ### 14. GitHub Topics
 
