@@ -3,6 +3,7 @@ name: godspeed-resume
 version: 1.1.0
 description: "Self-healing Godspeed resume -- auto-detects phase from git/plan/commits, resumes or asks. Use when continuing from a previous session or recovering from a crash."
 license: CC BY-NC-SA 4.0
+compatibility: "Claude Code, Cursor, Gemini CLI, Codex, Windsurf, GitHub Copilot, and 30+ compatible agents"
 metadata:
   author: citadel-labs
 ---

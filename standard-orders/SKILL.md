@@ -3,6 +3,7 @@ name: standard-orders
 version: 4.1.1
 description: "Operating protocol -- single entry point for all Human + AI Agent collaboration. Three Standing Orders: SO1 Godspeed (idea-to-ship), SO2 Project Management (GitHub PM), SO3 Quality Delivery (quality gate). Triggers on session start, \"godspeed\", \"standard orders\", \"plan and execute\", \"let's build\", \"fix this\"."
 license: CC BY-NC-SA 4.0
+compatibility: "Claude Code, Cursor, Gemini CLI, Codex, Windsurf, GitHub Copilot, and 30+ compatible agents"
 metadata:
   author: citadel-labs
 ---

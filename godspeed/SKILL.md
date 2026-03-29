@@ -3,6 +3,7 @@ name: godspeed
 version: 1.0.0
 description: "SO1 Godspeed -- 12-phase idea-to-ship execution engine. Triggers on \"godspeed\", \"plan and execute\", \"let's build\", \"fix this\", or any work initiation requiring full cycle execution."
 license: CC BY-NC-SA 4.0
+compatibility: "Claude Code, Cursor, Gemini CLI, Codex, Windsurf, GitHub Copilot, and 30+ compatible agents"
 metadata:
   author: citadel-labs
 ---
