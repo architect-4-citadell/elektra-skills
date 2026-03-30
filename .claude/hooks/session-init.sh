@@ -69,8 +69,7 @@ run_update_check() {
           ;;
         JUST_UPGRADED*)
           local from to
-          from="$(echo "$result" | awk '{print $2}')"
-          to="$(echo "$result" | awk '{print $3}')"
+          read -r _ from to <<< "$result"
           echo "[ELEKTRA] Running Elektra Skills v${to} (just updated from v${from})!"
           ;;
       esac

@@ -46,7 +46,7 @@ Tell user: "Auto-upgrade enabled. Future updates will install automatically." Th
 
 **If "Not now":** Write snooze state with escalating backoff (first snooze = 24h, second = 48h, third+ = 1 week), then continue with the current skill. Do not mention the upgrade again.
 ```bash
-_SNOOZE_FILE=~/.elektra/update-snoozed
+_SNOOZE_FILE="$HOME/.elektra/update-snoozed"
 _REMOTE_VER="{new}"
 _CUR_LEVEL=0
 if [ -f "$_SNOOZE_FILE" ]; then
@@ -130,6 +130,13 @@ mv "$TMP_DIR/elektra-skills" "$INSTALL_DIR"
 cd "$INSTALL_DIR" && ./setup
 rm -rf "$INSTALL_DIR.bak" "$TMP_DIR"
 ```
+If `./setup` fails, restore from backup and warn the user:
+```bash
+rm -rf "$INSTALL_DIR"
+mv "$INSTALL_DIR.bak" "$INSTALL_DIR"
+rm -rf "$TMP_DIR"
+```
+Tell user: "Vendored upgrade failed — restored previous version. Run `/elektra-update` manually to retry."
 
 ### Step 4.5: Sync local vendored copy
 
@@ -203,8 +210,7 @@ When invoked directly as `/elektra-update` (not from session-init):
 1. Force a fresh update check (bypass cache):
 ```bash
 _ELEKTRA_DIR="${ELEKTRA_DIR:-$(cd "$(dirname "$(readlink -f "$0" 2>/dev/null || echo "$0")")/.." 2>/dev/null && pwd || echo "$HOME/.claude/skills/elektra-skills")}"
-"$_ELEKTRA_DIR/bin/elektra-update-check" --force 2>/dev/null || \
-.claude/skills/elektra-skills/bin/elektra-update-check --force 2>/dev/null || true
+"$_ELEKTRA_DIR/bin/elektra-update-check" --force 2>/dev/null || true
 ```
 Use the output to determine if an upgrade is available.
 
