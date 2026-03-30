@@ -2,6 +2,17 @@
 
 All notable changes to Elektra Skills will be documented in this file.
 
+## [0.6.0] - 2026-03-30
+
+### Added
+- Self-update system: `/elektra-update` skill with auto-upgrade, snooze, and version detection
+- `bin/elektra-update-check` — periodic version check against GitHub (60min/720min cache TTL, escalating snooze backoff)
+- `bin/elektra-config` — config read/write for `~/.elektra/config.yaml` (auto_upgrade, update_check preferences)
+- `setup` script — makes binaries and hooks executable, creates state directory
+- `VERSION` file — source of truth for installed version
+- Session-init hook now runs update check on every session start, prompts on new versions
+- `/elektra-update` added to Standing Orders dispatch table and trigger patterns in CLAUDE.md
+
 ## [0.5.1] - 2026-03-28
 
 ### Added

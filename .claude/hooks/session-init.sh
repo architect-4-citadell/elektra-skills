@@ -1,7 +1,7 @@
 #!/bin/bash
 # Session Init -- initialize session state for Elektra governance hooks
 # SessionStart hook: creates .context/.session-state.json, detects first-run onboarding,
-# checks dependency skills on first install
+# checks dependency skills on first install, runs update check
 
 set -euo pipefail
 
@@ -24,6 +24,58 @@ cat > "$STATE_FILE" << INIT
   "branch": "$(git branch --show-current 2>/dev/null || echo 'unknown')"
 }
 INIT
+
+# ---------------------------------------------------------------------------
+# Auto-update check
+# Detect the elektra-skills install directory and run update check.
+# Output is passed through so the agent sees UPGRADE_AVAILABLE or JUST_UPGRADED.
+# ---------------------------------------------------------------------------
+detect_elektra_dir() {
+  # Check common install locations in priority order
+  local candidates=(
+    "$HOME/.claude/skills/elektra-skills"
+    ".claude/skills/elektra-skills"
+    ".agents/skills/elektra-skills"
+  )
+  # Also check if we're running from within the repo itself
+  local script_dir
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)"
+  if [ -f "$script_dir/VERSION" ] && [ -f "$script_dir/bin/elektra-update-check" ]; then
+    echo "$script_dir"
+    return 0
+  fi
+  for dir in "${candidates[@]}"; do
+    if [ -d "$dir" ] && [ -f "$dir/VERSION" ]; then
+      echo "$dir"
+      return 0
+    fi
+  done
+  return 1
+}
+
+run_update_check() {
+  local elektra_dir
+  elektra_dir="$(detect_elektra_dir 2>/dev/null)" || return 0
+  if [ -x "$elektra_dir/bin/elektra-update-check" ]; then
+    local result
+    result=$("$elektra_dir/bin/elektra-update-check" 2>/dev/null || true)
+    if [ -n "$result" ]; then
+      echo ""
+      echo "$result"
+      # Tell the agent where to find the upgrade skill
+      case "$result" in
+        UPGRADE_AVAILABLE*)
+          echo "[ELEKTRA] To upgrade, read elektra-update/SKILL.md and follow the Inline upgrade flow."
+          ;;
+        JUST_UPGRADED*)
+          local from to
+          read -r _ from to <<< "$result"
+          echo "[ELEKTRA] Running Elektra Skills v${to} (just updated from v${from})!"
+          ;;
+      esac
+    fi
+  fi
+}
 
 # ---------------------------------------------------------------------------
 # Dependency skill checker
@@ -120,9 +172,12 @@ else
 [ELEKTRA] Session initialized.
 Branch: $BRANCH
 Hooks active: cycle-guard, token-cap, rai-check, quality-gate
-Skills: /standard-orders, /godspeed, /godspeed-resume, /project-mgmt, /responsible-ai, /autoresearch, /plan-design-review
+Skills: /standard-orders, /godspeed, /godspeed-resume, /project-mgmt, /responsible-ai, /autoresearch, /plan-design-review, /elektra-update
 Standing Orders: Plan > Implement > Test > Review > Ship
 CONTEXT
 fi
+
+# Always run update check (non-blocking — outputs only if action needed)
+run_update_check
 
 exit 0

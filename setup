@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# setup — make Elektra Skills binaries executable and validate install
+set -euo pipefail
+
+ELEKTRA_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# Make binaries executable
+if [ -d "$ELEKTRA_DIR/bin" ]; then
+  chmod +x "$ELEKTRA_DIR/bin/"* 2>/dev/null || true
+fi
+
+# Make hooks executable
+if [ -d "$ELEKTRA_DIR/.claude/hooks" ]; then
+  chmod +x "$ELEKTRA_DIR/.claude/hooks/"* 2>/dev/null || true
+fi
+
+# Make setup itself executable (for future upgrades)
+chmod +x "$ELEKTRA_DIR/setup" 2>/dev/null || true
+
+# Create state directory
+mkdir -p "$HOME/.elektra"
+
+echo "Elektra Skills $(cat "$ELEKTRA_DIR/VERSION" 2>/dev/null || echo "unknown") — setup complete."
