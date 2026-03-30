@@ -161,6 +161,7 @@ All work flows through Standing Orders. Classify intent, dispatch to the right e
 | `/project-mgmt` | SO2 | GitHub PM routine | `project-mgmt/SKILL.md` |
 | `/SO-quality` | SO3 | Quality gate (frontend/docs) | `standard-orders/orders/SO3-quality-delivery.md` |
 | `/responsible-ai` | RAI | 7-pillar governance | `responsible-ai/SKILL.md` |
+| `/elektra-update` | Update | Self-upgrade to latest version | `elektra-update/SKILL.md` |
 | `/autoresearch` | Iteration | Autonomous loop | `autoresearch/SKILL.md` |
 | `/autoresearch:security` | Security | STRIDE + OWASP audit | `autoresearch/SKILL.md` |
 | `/autoresearch:ship` | Ship | Universal ship workflow | `autoresearch/SKILL.md` |
@@ -175,7 +176,7 @@ All work flows through Standing Orders. Classify intent, dispatch to the right e
 | `/review` | Code Review | Pre-landing PR review (gstack) | P5 final review |
 | `/ui-ux-pro-max` | Design | 10-priority design audit | P3.5 + P4.5 design gates |
 
-**Trigger patterns:** "godspeed" / "plan and execute" / "let's build" / "fix this" -> SO1. "check issues" / "project status" -> SO2. "quality check" / "design review" -> SO3 + `/plan-design-review` + `/ui-ux-pro-max`. "responsible AI" / "RAI" / "compliance" -> RAI. "iterate" / "improve" -> Autoresearch. "ship it" / "deploy" -> Ship. "debug" / "investigate" -> Debug. "review plan" / "plan review" -> P3.5 gate.
+**Trigger patterns:** "godspeed" / "plan and execute" / "let's build" / "fix this" -> SO1. "check issues" / "project status" -> SO2. "quality check" / "design review" -> SO3 + `/plan-design-review` + `/ui-ux-pro-max`. "responsible AI" / "RAI" / "compliance" -> RAI. "iterate" / "improve" -> Autoresearch. "ship it" / "deploy" -> Ship. "debug" / "investigate" -> Debug. "review plan" / "plan review" -> P3.5 gate. "update elektra" / "upgrade elektra" / "get latest version" -> `/elektra-update`.
 
 ---
 
