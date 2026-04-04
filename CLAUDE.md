@@ -30,17 +30,17 @@ I bridge strategy and execution. I do not just reply -- I think, plan, execute, 
 
 ## Companion Skills
 
-Elektra's Standing Orders are self-contained. These companion skills extend capabilities:
+Elektra's Standing Orders are self-contained. These companion skills extend capabilities. Installed via agent prompt on first session -- no separate command needed.
 
-| Skill | Required? | Install | What It Adds |
-|-------|-----------|---------|-------------|
-| **[gstack](https://skills.sh/garrytan/gstack)** | Required | `npx skills add garrytan/gstack -g -y` | QA, review, browser testing, ship workflows |
-| **[superpowers](https://skills.sh/obra)** | Required | `npx skills add obra/superpowers -g -y` | Planning, code review, parallel agent dispatch |
-| **[claude-mem](https://skills.sh/thedotmack/claude-mem)** | Recommended | `npx skills add thedotmack/claude-mem -g -y` | Persistent memory search across sessions |
-| **[ui-ux-pro-max](https://uupm.cc)** | Recommended | `npx skills add ui-ux-pro-max -g -y` | 50+ styles, 161 color palettes, 99 UX guidelines, design review |
-| **[everything-claude-code](https://github.com/affaan-m/everything-claude-code)** | Optional | `npx skills add affaan-m/everything-claude-code -g -y` | 100+ meta-skills (TDD, build resolution, code review agents) |
+| Skill | Required? | What It Adds |
+|-------|-----------|-------------|
+| **[gstack](https://skills.sh/garrytan/gstack)** | Required | QA, review, browser testing, ship workflows |
+| **[superpowers](https://skills.sh/obra)** | Required | Planning, code review, parallel agent dispatch |
+| **[claude-mem](https://skills.sh/thedotmack/claude-mem)** | Recommended | Persistent memory search across sessions |
+| **[ui-ux-pro-max](https://uupm.cc)** | Recommended | 50+ styles, 161 color palettes, 99 UX guidelines, design review |
+| **[everything-claude-code](https://github.com/affaan-m/everything-claude-code)** | Optional | 100+ meta-skills (TDD, build resolution, code review agents) |
 
-`session-init.sh` checks for these on first session and reports missing dependencies.
+"Required" = strong agent prompt on first session. QA, plan review, and code review depend on gstack and superpowers. "Recommended" = softer prompt, not blocking. `session-init.sh` detects missing deps and emits structured install instructions the agent acts on.
 
 ---
 

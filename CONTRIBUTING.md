@@ -37,6 +37,35 @@ Every change must:
 - **Follow the SKILL.md spec.** Valid frontmatter, clear trigger descriptions, progressive disclosure via `references/`.
 - **Pass validation.** `npx skills validate` must pass on all modified skills.
 
+## Responsible AI — Community-Driven
+
+Elektra's RAI governance is open for community hardening. The 7-pillar framework, kill switches, hook detection, and checklists all accept contributions.
+
+### How to contribute RAI improvements
+
+1. **Use the issue template.** Click "New Issue" > "Responsible AI Improvement" on [GitHub](https://github.com/architect-4-citadell/elektra-skills/issues/new/choose). The template asks for the pillar, the component, the real-world scenario, and the proposed change.
+
+2. **Real incidents only.** Every RAI rule in Elektra was born from a production bug, a near-miss, or a compliance gap. Theoretical proposals without real scenarios will be deprioritized.
+
+3. **Framework-agnostic.** RAI rules must work across Python, TypeScript, Go, Rust — any stack. Include language-specific detection as optional appendices, not core rules.
+
+### What we're looking for
+
+| Area | Examples |
+|------|---------|
+| **Kill switch triggers** | New halt conditions for agent execution |
+| **Hook detection patterns** | File path or code patterns for `rai-check.sh` |
+| **Checklist items** | Additions to `responsible-ai/references/rai-checklist.md` |
+| **Layer mappings** | Which RAI pillars apply to which architectural layers |
+| **Subagent review patterns** | Systematic AI-generated code mistakes |
+| **Fallback logging rules** | Silent failure detection and logging mandates |
+
+### Active RAI issues
+
+Browse issues labeled [`responsible-ai`](https://github.com/architect-4-citadell/elektra-skills/labels/responsible-ai) for open work. Issues marked [`community`](https://github.com/architect-4-citadell/elektra-skills/labels/community) are specifically designed for external contributors.
+
+---
+
 ## What we won't merge
 
 - Skills that are project-specific (not generalizable)

@@ -1,0 +1,83 @@
+name: Responsible AI Improvement
+description: Propose an improvement to Elektra's RAI governance (kill switches, checks, pillars, detection)
+title: "RAI: "
+labels: ["responsible-ai", "community", "enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Responsible AI Improvement Proposal
+
+        Elektra's RAI governance is community-driven. Every improvement should be born from a real incident, a real gap, or a real-world scenario — not theoretical.
+
+  - type: dropdown
+    id: pillar
+    attributes:
+      label: Which RAI pillar does this affect?
+      options:
+        - Tenant / Data Isolation
+        - PII Protection
+        - Citation Integrity
+        - Confidence Scoring
+        - Hallucination Prevention
+        - Bias Mitigation
+        - Content Provenance
+        - New pillar (describe below)
+        - Cross-cutting (multiple pillars)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Which component should change?
+      options:
+        - rai-check.sh (hook detection)
+        - responsible-ai/SKILL.md (skill definition)
+        - responsible-ai/references/rai-checklist.md (checklist)
+        - CLAUDE.md (kill switches / coding standards)
+        - cycle-guard.sh (workflow enforcement)
+        - quality-gate.sh (post-edit checks)
+        - New component needed
+      multiple: true
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened? (The real-world scenario)
+      description: Describe the incident, gap, or near-miss that motivates this change. "Theoretical" proposals without real scenarios will be deprioritized.
+      placeholder: "During a production session, an agent silently swallowed an auth check failure and..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What should change?
+      description: Be specific. Include file paths, detection patterns, or rule text.
+      placeholder: "Add detection pattern for bare `except` blocks in rai-check.sh..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: detection
+    attributes:
+      label: How would this be detected/enforced?
+      description: File path patterns, code patterns, hook logic, or checklist items.
+      placeholder: "Pattern match: `except.*return \\[\\]` in Python files"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Contribution checklist
+      options:
+        - label: This is based on a real incident or gap (not theoretical)
+          required: true
+        - label: This is framework-agnostic (not tied to a specific project)
+          required: true
+        - label: This doesn't break existing skill activation patterns
+          required: true

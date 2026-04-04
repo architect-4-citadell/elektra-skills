@@ -61,31 +61,13 @@ your-project/
 
 ## Quick Start
 
-### 1. Install Elektra
-
 ```bash
-npx skills add architect-4-citadell/elektra-skills
+npx skills add architect-4-citadell/elektra-skills -y
 ```
 
-### 2. Install companion skills
+Open your agent. On first session, Elektra onboards herself and you, offers to install companion skills, and configures update notifications. One command. That's it.
 
-```bash
-npx skills add garrytan/gstack obra/superpowers thedotmack/claude-mem ui-ux-pro-max -g -y
-```
-
-| Skill | Required? | What It Adds |
-|-------|-----------|-------------|
-| **[gstack](https://skills.sh/garrytan/gstack)** | Required | QA, plan review, code review, browser testing, ship workflows |
-| **[superpowers](https://skills.sh/obra)** | Required | Planning, code review, parallel agent dispatch |
-| **[claude-mem](https://skills.sh/thedotmack/claude-mem)** | Recommended | Persistent memory search across sessions |
-| **[ui-ux-pro-max](https://uupm.cc)** | Recommended | 50+ styles, 161 palettes, 99 UX guidelines, design review |
-| **[everything-claude-code](https://github.com/affaan-m/everything-claude-code)** | Optional | 100+ meta-skills (TDD, build resolution, code review agents) |
-
-### 3. Start a session
-
-Open your agent. Elektra detects the first session, onboards herself and you, then asks what you're working on.
-
-### 4. (Optional) Pair with Conductor
+### (Optional) Pair with Conductor
 
 For multi-agent orchestration, parallel execution, and cross-workspace coordination:
 
@@ -264,15 +246,26 @@ Pair with **[claude-mem](https://skills.sh/thedotmack/claude-mem)** for search a
 
 ---
 
+## Companion Skills
+
+Elektra offers to install these on first session. No separate command needed.
+
+| Skill | Required? | What It Adds |
+|-------|-----------|-------------|
+| **[gstack](https://skills.sh/garrytan/gstack)** | Required | QA, plan review, code review, browser testing, ship workflows |
+| **[superpowers](https://skills.sh/obra)** | Required | Planning, code review, parallel agent dispatch |
+| **[claude-mem](https://skills.sh/thedotmack/claude-mem)** | Recommended | Persistent memory search across sessions |
+| **[ui-ux-pro-max](https://uupm.cc)** | Recommended | 50+ styles, 161 palettes, 99 UX guidelines, design review |
+| **[everything-claude-code](https://github.com/affaan-m/everything-claude-code)** | Optional | 100+ meta-skills (TDD, build resolution, code review agents) |
+
+"Required" means Elektra strongly recommends them -- QA, plan review, and code review features depend on gstack and superpowers. "Recommended" skills improve the experience but aren't blocking.
+
+---
+
 ## Built On
 
 | Name | Role |
 |------|------|
-| **[gstack](https://skills.sh/garrytan/gstack)** | Governor Stack -- structured AI agent workflow governance |
-| **[superpowers](https://skills.sh/obra)** | AI agent composition, planning, and code review |
-| **[claude-mem](https://skills.sh/thedotmack/claude-mem)** | Persistent memory search across sessions |
-| **[ui-ux-pro-max](https://uupm.cc)** | 50+ styles, 161 color palettes, 99 UX guidelines, design review |
-| **[everything-claude-code](https://github.com/affaan-m/everything-claude-code)** | 100+ Claude Code meta-skills, agents, and hooks |
 | **[autoresearch (Karpathy)](https://github.com/karpathy/autoresearch)** | Autonomous iteration loop -- the original inspiration |
 | **[skills.sh](https://skills.sh)** | Open agent skills ecosystem -- discovery + distribution |
 | **[Agent Skills Specification](https://agentskills.io)** | The format standard these skills follow |
@@ -323,6 +316,14 @@ Building a commercial product with these skills? See [COMMERCIAL_LICENSE.md](./C
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md). Every contribution must solve a real problem -- not a theoretical one.
+
+### Responsible AI -- Community-Driven
+
+Elektra's RAI governance accepts community hardening. Kill switches, hook detection, the 7-pillar checklist, and layer mappings are all open for improvement.
+
+Browse open issues: [`responsible-ai`](https://github.com/architect-4-citadell/elektra-skills/labels/responsible-ai) | Submit: [New RAI Improvement](https://github.com/architect-4-citadell/elektra-skills/issues/new?template=responsible-ai.yml)
+
+Every rule was born from a real incident. Yours should be too.
 
 ---
 
