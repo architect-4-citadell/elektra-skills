@@ -80,60 +80,109 @@ run_update_check() {
 # ---------------------------------------------------------------------------
 # Dependency skill checker
 # Elektra works best with companion skills. Check on first session.
+# Emits structured, agent-actionable output with version envelope.
 # ---------------------------------------------------------------------------
 check_dependency_skills() {
-  local SKILLS_DIR="$HOME/.claude/skills"
+  local LOCAL_SKILLS=".claude/skills"
+  local LOCAL_AGENTS=".agents/skills"
+  local GLOBAL_SKILLS="$HOME/.claude/skills"
   local PLUGINS_CACHE="$HOME/.claude/plugins/cache"
-  local MISSING=()
+
+  local MISSING_REQ_NAMES=()
+  local MISSING_REC_NAMES=()
+  local MISSING_SLUGS=()
   local INSTALLED=()
 
-  # Dependency table: name|install_cmd|description|search_patterns (colon-separated glob paths)
-  local DEPS=(
-    "gstack|npx skills add garrytan/gstack -g -y|Governor Stack -- QA, review, browser testing, ship workflows|$SKILLS_DIR/gstack:$SKILLS_DIR/*/gstack"
-    "superpowers|npx skills add obra/superpowers -g -y|Planning, code review, parallel agent dispatch|$SKILLS_DIR/superpowers:$PLUGINS_CACHE/superpowers-dev/superpowers"
-    "claude-mem|npx skills add thedotmack/claude-mem -g -y|Persistent memory search across sessions (recommended)|$SKILLS_DIR/claude-mem:$PLUGINS_CACHE/thedotmack/claude-mem"
-    "ui-ux-pro-max|npx skills add ui-ux-pro-max -g -y|50+ styles, 99 UX guidelines, design review for P3.5/P4.5 (recommended)|$SKILLS_DIR/ui-ux-pro-max:$PLUGINS_CACHE/*/ui-ux-pro-max*"
-    "everything-claude-code|npx skills add affaan-m/everything-claude-code -g -y|100+ agent skills -- TDD, code review, build resolution (optional)|$SKILLS_DIR/everything-claude-code:$PLUGINS_CACHE/*/everything-claude-code"
-  )
-
-  for dep in "${DEPS[@]}"; do
-    IFS='|' read -r name cmd desc paths <<< "$dep"
-    local found=false
-    IFS=':' read -ra SEARCH_PATHS <<< "$paths"
-    for pattern in "${SEARCH_PATHS[@]}"; do
+  # Check if a skill is installed at any known path (local + global)
+  is_skill_installed() {
+    local paths="$1"
+    IFS=':' read -ra search <<< "$paths"
+    for pattern in "${search[@]}"; do
       # shellcheck disable=SC2086
       if ls $pattern 2>/dev/null | head -1 >/dev/null 2>&1; then
-        found=true
-        break
+        return 0
       fi
     done
-    if [[ "$found" == "true" ]]; then
+    return 1
+  }
+
+  # Required companion skills: name|install_slug|search_paths
+  local REQUIRED=(
+    "gstack|garrytan/gstack|$GLOBAL_SKILLS/gstack:$GLOBAL_SKILLS/*/gstack:$LOCAL_SKILLS/gstack:$LOCAL_AGENTS/gstack"
+    "superpowers|obra/superpowers|$GLOBAL_SKILLS/superpowers:$PLUGINS_CACHE/superpowers-dev/superpowers:$LOCAL_SKILLS/superpowers:$LOCAL_AGENTS/superpowers"
+  )
+
+  # Recommended companion skills
+  local RECOMMENDED=(
+    "claude-mem|thedotmack/claude-mem|$GLOBAL_SKILLS/claude-mem:$PLUGINS_CACHE/thedotmack/claude-mem:$LOCAL_SKILLS/claude-mem:$LOCAL_AGENTS/claude-mem"
+    "ui-ux-pro-max|ui-ux-pro-max|$GLOBAL_SKILLS/ui-ux-pro-max:$PLUGINS_CACHE/*/ui-ux-pro-max*:$LOCAL_SKILLS/ui-ux-pro-max:$LOCAL_AGENTS/ui-ux-pro-max"
+    "everything-claude-code|affaan-m/everything-claude-code|$GLOBAL_SKILLS/everything-claude-code:$PLUGINS_CACHE/*/everything-claude-code:$LOCAL_SKILLS/everything-claude-code:$LOCAL_AGENTS/everything-claude-code"
+  )
+
+  for dep in "${REQUIRED[@]}"; do
+    IFS='|' read -r name slug paths <<< "$dep"
+    if is_skill_installed "$paths"; then
       INSTALLED+=("$name")
     else
-      MISSING+=("$name|$cmd|$desc")
+      MISSING_REQ_NAMES+=("$name")
+      MISSING_SLUGS+=("$slug")
     fi
   done
 
-  # Report
-  if [[ ${#MISSING[@]} -gt 0 ]]; then
-    echo ""
-    echo "[ELEKTRA] Dependency Check:"
-    echo ""
-    for skill in "${INSTALLED[@]}"; do
-      echo "  [x] $skill"
-    done
-    for entry in "${MISSING[@]}"; do
-      IFS='|' read -r name cmd desc <<< "$entry"
-      echo "  [ ] $name -- $desc"
-      echo "      Install: $cmd"
-    done
-    echo ""
-    echo "Install all missing with:"
-    echo "  npx skills add garrytan/gstack obra/superpowers thedotmack/claude-mem ui-ux-pro-max -g -y"
-    echo ""
-  else
-    echo "[ELEKTRA] All dependency skills installed: ${INSTALLED[*]}"
+  for dep in "${RECOMMENDED[@]}"; do
+    IFS='|' read -r name slug paths <<< "$dep"
+    if is_skill_installed "$paths"; then
+      INSTALLED+=("$name")
+    else
+      MISSING_REC_NAMES+=("$name")
+      MISSING_SLUGS+=("$slug")
+    fi
+  done
+
+  # Resolve elektra-config path for agent instructions
+  local config_cmd="elektra-config"
+  local elektra_dir
+  elektra_dir="$(detect_elektra_dir 2>/dev/null)" || true
+  if [[ -n "${elektra_dir:-}" ]] && [[ -x "$elektra_dir/bin/elektra-config" ]]; then
+    config_cmd="$elektra_dir/bin/elektra-config"
   fi
+
+  # All installed — emit auto-update action only
+  if [[ ${#MISSING_REQ_NAMES[@]} -eq 0 ]] && [[ ${#MISSING_REC_NAMES[@]} -eq 0 ]]; then
+    echo "[ELEKTRA] All dependency skills installed: ${INSTALLED[*]}"
+    echo ""
+    echo "[ELEKTRA_FIRST_SESSION_BEGIN v1]"
+    echo "ACTIONS_COUNT: 1"
+    echo "ACTION_1_TYPE: update_notifications"
+    echo "ACTION_1_PROMPT: Enable update notifications? Elektra will tell you when new versions are available. [Y/n]"
+    echo "ACTION_1_YES_CMD: $config_cmd set update_check true"
+    echo "ACTION_1_NO_CMD: $config_cmd set update_check false"
+    echo "[ELEKTRA_FIRST_SESSION_END]"
+    return
+  fi
+
+  # Build dynamic INSTALL_CMD from missing skills only
+  local install_cmd
+  if command -v npx >/dev/null 2>&1; then
+    install_cmd="npx skills add ${MISSING_SLUGS[*]} -g -y"
+  else
+    install_cmd="(npx not found -- install Node.js first, then: npx skills add ${MISSING_SLUGS[*]} -g -y)"
+  fi
+
+  # Emit structured first-session block (combined deps + update config)
+  echo ""
+  echo "[ELEKTRA_FIRST_SESSION_BEGIN v1]"
+  echo "ACTIONS_COUNT: 2"
+  echo "ACTION_1_TYPE: companion_skills"
+  [[ ${#MISSING_REQ_NAMES[@]} -gt 0 ]] && echo "ACTION_1_MISSING_REQUIRED: ${MISSING_REQ_NAMES[*]}"
+  [[ ${#MISSING_REC_NAMES[@]} -gt 0 ]] && echo "ACTION_1_MISSING_RECOMMENDED: ${MISSING_REC_NAMES[*]}"
+  echo "ACTION_1_INSTALL_CMD: $install_cmd"
+  echo "ACTION_2_TYPE: update_notifications"
+  echo "ACTION_2_PROMPT: Enable update notifications? Elektra will tell you when new versions are available. [Y/n]"
+  echo "ACTION_2_YES_CMD: $config_cmd set update_check true"
+  echo "ACTION_2_NO_CMD: $config_cmd set update_check false"
+  echo "SEQUENCE: ACTION_1 first, then ACTION_2"
+  echo "[ELEKTRA_FIRST_SESSION_END]"
 }
 
 # ---------------------------------------------------------------------------

@@ -20,4 +20,10 @@ chmod +x "$ELEKTRA_DIR/setup" 2>/dev/null || true
 # Create state directory
 mkdir -p "$HOME/.elektra"
 
+# Set sensible default config (update notifications ON)
+# Guarded: skip if config already exists, don't fail setup if write errors
+if [ ! -f "$HOME/.elektra/config.yaml" ]; then
+  "$ELEKTRA_DIR/bin/elektra-config" set update_check true 2>/dev/null || true
+fi
+
 echo "Elektra Skills $(cat "$ELEKTRA_DIR/VERSION" 2>/dev/null || echo "unknown") — setup complete."
