@@ -45,13 +45,13 @@ Run the full First Session Protocol from CLAUDE.md:
 
 1. Inform the user that existing onboarding data was found.
 2. Ask: **"Re-run full onboarding (project + user), or just update your user profile?"**
-   - **Full reset**: archive existing `project_discovery.md` and `user_profile.md` (rename with `_prev` suffix), then run Phases A-E.
-   - **Profile only**: archive `user_profile.md`, re-run Phase B only, update MEMORY.md index.
+   - **Full reset**: archive existing `project_discovery.md` and `user_profile.md` (rename with `_prev_YYYYMMDD_HHMMSS` timestamp suffix), then run Phases A-E.
+   - **Profile only**: archive `user_profile.md` (timestamp suffix), re-run Phase B only, update MEMORY.md index.
 3. After re-onboarding completes, confirm the new register (S1-S4) and announce readiness.
 
 ## Rules
 
-- Never delete memory files outright -- archive with `_prev` suffix so nothing is lost.
+- Never delete memory files outright -- archive with `_prev_YYYYMMDD_HHMMSS` timestamp suffix so nothing is lost.
 - Always run Phase A before Phase B in full reset -- project context informs which Phase B questions to skip.
 - Batch all onboarding questions in TWO prompts, never one-by-one.
 - After completing onboarding, announce: `[ELEKTRA] Onboarding complete. Register: {band}. Ready.`
