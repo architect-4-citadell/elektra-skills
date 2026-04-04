@@ -2,6 +2,18 @@
 
 All notable changes to Elektra Skills will be documented in this file.
 
+## [0.6.1] - 2026-04-04
+
+### Added
+- `/init-elektra` skill — run or re-run onboarding (fresh or reset mode with `_prev` archiving)
+- `/init-elektra` registered in Standing Orders dispatch table with trigger patterns
+
+### Changed
+- Post-install message redesigned with branded box, skill count, and clear next steps
+- First-session hook output compacted from 10 lines to 3 (Phase A-E details now reference CLAUDE.md)
+- Returning-session hook output compacted from 5 lines to 1
+- Update notifications prompt shortened
+
 ## [0.6.0] - 2026-03-30
 
 ### Added

@@ -26,4 +26,19 @@ if [ ! -f "$HOME/.elektra/config.yaml" ]; then
   "$ELEKTRA_DIR/bin/elektra-config" set update_check true 2>/dev/null || true
 fi
 
-echo "Elektra Skills $(cat "$ELEKTRA_DIR/VERSION" 2>/dev/null || echo "unknown") — setup complete."
+# Count installed skills
+SKILL_COUNT=$(find "$ELEKTRA_DIR" -maxdepth 2 -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+VERSION=$(cat "$ELEKTRA_DIR/VERSION" 2>/dev/null || echo "unknown")
+
+echo ""
+printf "  ╭%s╮\n" "$(printf '─%.0s' {1..48})"
+printf "  │  %-44s  │\n" "Elektra v${VERSION}"
+printf "  │  %-44s  │\n" "Solutions Architect by Citadel Agentic Labs"
+printf "  ╰%s╯\n" "$(printf '─%.0s' {1..48})"
+echo ""
+echo "  ${SKILL_COUNT} skills · hooks active · config ready"
+echo ""
+echo "  Next step: start a Claude Code session in any project."
+echo "  Onboarding runs automatically on first session."
+echo "  To re-run later: /init-elektra"
+echo ""

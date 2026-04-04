@@ -147,7 +147,7 @@ check_dependency_skills() {
     config_cmd="$elektra_dir/bin/elektra-config"
   fi
 
-  # All installed — emit auto-update action only
+  # All installed — compact first-session block
   if [[ ${#MISSING_REQ_NAMES[@]} -eq 0 ]] && [[ ${#MISSING_REC_NAMES[@]} -eq 0 ]]; then
     echo "[ELEKTRA] All dependency skills installed: ${INSTALLED[*]}"
     echo ""
@@ -161,7 +161,7 @@ check_dependency_skills() {
     return
   fi
 
-  # Build dynamic INSTALL_CMD from missing skills only
+  # Build install command from missing skills
   local install_cmd
   if command -v npx >/dev/null 2>&1; then
     install_cmd="npx skills add ${MISSING_SLUGS[*]} -g -y"
@@ -169,7 +169,7 @@ check_dependency_skills() {
     install_cmd="(npx not found -- install Node.js first, then: npx skills add ${MISSING_SLUGS[*]} -g -y)"
   fi
 
-  # Emit structured first-session block (combined deps + update config)
+  # Compact first-session block (deps + update config)
   echo ""
   echo "[ELEKTRA_FIRST_SESSION_BEGIN v1]"
   echo "ACTIONS_COUNT: 2"
@@ -178,7 +178,7 @@ check_dependency_skills() {
   [[ ${#MISSING_REC_NAMES[@]} -gt 0 ]] && echo "ACTION_1_MISSING_RECOMMENDED: ${MISSING_REC_NAMES[*]}"
   echo "ACTION_1_INSTALL_CMD: $install_cmd"
   echo "ACTION_2_TYPE: update_notifications"
-  echo "ACTION_2_PROMPT: Enable update notifications? Elektra will tell you when new versions are available. [Y/n]"
+  echo "ACTION_2_PROMPT: Enable update notifications? [Y/n]"
   echo "ACTION_2_YES_CMD: $config_cmd set update_check true"
   echo "ACTION_2_NO_CMD: $config_cmd set update_check false"
   echo "SEQUENCE: ACTION_1 first, then ACTION_2"
@@ -190,18 +190,10 @@ check_dependency_skills() {
 # ---------------------------------------------------------------------------
 if [[ ! -f "MEMORY.md" ]]; then
   # No memory at all -- full onboarding needed
-  cat << 'CONTEXT'
-[ELEKTRA] First session detected -- no MEMORY.md found.
-
-Run First Session Protocol:
-  Phase A: Self-onboard (read README, package.json/pyproject.toml, git history, directory structure)
-  Phase B: Onboard user (batch-ask: role, experience band S1-S4, team context, current work)
-  Phase C: Initialize memory (project_discovery.md, user_profile.md, MEMORY.md)
-  Phase D: Configure Standing Orders based on discovered context
-  Phase E: Dispatch to appropriate Standing Order based on user's current task
-
-Do NOT skip any phase. Ask all onboarding questions in TWO batched prompts.
-CONTEXT
+  echo "[ELEKTRA] First session detected -- no MEMORY.md found."
+  echo ""
+  echo "Run First Session Protocol (Phases A-E per CLAUDE.md)."
+  echo "Batch all onboarding questions in TWO prompts."
 
   # First install -- check dependencies
   check_dependency_skills
@@ -215,15 +207,9 @@ Ask all questions in TWO batched prompts, then save to user_profile.md.
 CONTEXT
 
 else
-  # Returning session -- announce status
+  # Returning session -- compact status
   BRANCH=$(git branch --show-current 2>/dev/null || echo 'unknown')
-  cat << CONTEXT
-[ELEKTRA] Session initialized.
-Branch: $BRANCH
-Hooks active: cycle-guard, token-cap, rai-check, quality-gate
-Skills: /standard-orders, /godspeed, /godspeed-resume, /project-mgmt, /responsible-ai, /autoresearch, /plan-design-review, /elektra-update
-Standing Orders: Plan > Implement > Test > Review > Ship
-CONTEXT
+  echo "[ELEKTRA] Session initialized. Branch: $BRANCH. Hooks active."
 fi
 
 # Always run update check (non-blocking — outputs only if action needed)
