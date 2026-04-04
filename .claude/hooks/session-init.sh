@@ -200,11 +200,8 @@ if [[ ! -f "MEMORY.md" ]]; then
 
 elif ! grep -q "user_profile" "MEMORY.md" 2>/dev/null; then
   # Memory exists but no user profile -- partial onboarding
-  cat << 'CONTEXT'
-[ELEKTRA] Returning project, new user. MEMORY.md found but no user profile.
-Run User Onboarding (Phase B of First Session Protocol).
-Ask all questions in TWO batched prompts, then save to user_profile.md.
-CONTEXT
+  echo "[ELEKTRA] Returning project, new user. Run Phase B (user onboarding per CLAUDE.md)."
+  echo "Batch all questions in TWO prompts."
 
 else
   # Returning session -- compact status
