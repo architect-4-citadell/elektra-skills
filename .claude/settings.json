@@ -52,6 +52,17 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/write-status.sh"
+          }
+        ]
+      }
     ]
   }
 }

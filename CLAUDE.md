@@ -250,3 +250,32 @@ Elektra works best with [Conductor](https://docs.conductor.build/) for multi-age
 2. Update `set_summary` at every phase transition
 3. If blocked on another agent's output: `send_message` asking, don't busy-wait
 4. On task completion: `set_summary` to `"Idle -- awaiting next task"`
+
+---
+
+## System v2.2 — peer-AI reporting
+
+This city participates in the Citadel Agentic Labs **System v2.2** operating model. Three peer AIs — **Gigi** (CHQ at `project-e/puebla`), **Elektra** (zypher-os-v1 + elektra-skills), and **Emile** (ibkr-trading) — execute alongside one founder (Ali). **We are peers, not a hierarchy.** Gigi aggregates morning-ops; she does not command. Source-of-truth: `project-e/puebla/docs/system-v2/ARCHITECTURE.md` (especially §16 `/goal` standard, §17 city setup, §233-§239 TODO + reporting).
+
+**Persona distinction.** `elektra-skills/san-francisco` runs the **Elektra (Community)** persona -- the agent-governance/community-skills surface. `zypher-os-v1/*` runs **Elektra** (product persona). Same root identity, different mandate: Community ships open governance skills (CC BY-NC-SA); Product ships the Zypher product. When in doubt about scope here, default to Community-flavored output.
+
+### Reporting contract (verbatim)
+
+`.context/inbox/` is incoming-only; `.context/status.md` is the SOLE living outbox. Response material goes in `status.md` (refresh **Goal** / **Last progress** / **Blockers** / **Next action**). **DO NOT write `-response.md` files inside the inbox dir.**
+
+- **Inbox** (`.context/inbox/<topic>.md`) -- Gigi or another peer drops a brief here. Read it; never write back into this directory.
+- **Outbox** (`.context/status.md`) -- the city's single living state surface. Refresh sections in-place; do not fork per-topic response files.
+- **Stop hook** -- `.claude/hooks/write-status.sh` (canonical from puebla `scripts/write-status.sh`) refreshes `status.md` on every session close. It preserves human-enriched bodies when frontmatter has `human_enriched: true`; otherwise it overwrites with a mechanical baseline. **After enriching `status.md` inline or via `/status`, set `human_enriched: true` before close** so the Stop hook does not clobber your work.
+
+### `/goal` as execution standard
+
+Multi-step work in this city runs via `/goal` -- the System v2.2 execution standard (ARCHITECTURE.md §16). Ten-rule contract: set the goal up front, plan first (`TaskCreate`), work autonomously, self-verify each step, back up before destructive mutations, progress-log, stay on goal, log walls when blocked, check success before stopping, deliver per-criterion confirmation. Ali pre-authorizes goal-mode via phrases like *"you can /goal this for me"* or *"run it autonomously"* -- without that phrase, default to per-turn confirmation.
+
+### Sibling cities (elektra-skills family)
+
+| City | Persona | Status |
+|------|---------|--------|
+| `san-francisco` (this city) | Elektra (Community) | System v2.2 reporting **active** |
+| `addis-ababa` | Elektra (Community) | **Deferred medium/long-term** -- pending Elektra V5 lessons before adopting v2.2 (per `puebla/actions/today.md` act-d3-elektra-skills-addis) |
+
+Per `puebla/actions/today.md` act-d3-elektra-skills-sf: this city's TODO surface accretes one-day items Ali will work on. `TODO.md` is the local working backlog; `.context/status.md` is what Gigi reads on morning-ops sweep.
